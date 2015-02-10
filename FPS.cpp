@@ -19,7 +19,7 @@ bool FPS::GetTick()
         lastTime = 0;
     }
     //проверяем, прошёл ли тик (секунда/cFPS)
-    int timeTest = 1000/cFPS  + lastTime - curTime;
+    int timeTest = 1000/constFPS  + lastTime - curTime;
     if (timeTest  > 0) {
         SDL_Delay(timeTest);
     }
@@ -38,7 +38,7 @@ bool FPS::GetTick()
     }
     //now about our tick
     lastTime = SDL_GetTicks();
-    if (lastTime < curTime - 1000/cFPS) {
+    if (lastTime < curTime - 1000/constFPS) {
         lastTime = curTime;
     }
     return true;
