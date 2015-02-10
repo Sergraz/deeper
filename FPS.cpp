@@ -13,29 +13,35 @@ FPS::FPS()
 
 bool FPS::GetTick()
 {
-    int curTime;
-    curTime = SDL_GetTicks();
+    int curTime = SDL_GetTicks();
     //на случай если программа включена больше 49 дней
-    if (curTime < lastTime)
-    {
+    if (curTime < lastTime) {
         lastTime = 0;
     }
-    //проверяем, прошёл ли тик (секунда/FPS)
-    if (lastTime + 1000/constFPS < curTime)
-    {
-        //first, let's count actual fps
-        frames ++;
-        if (lastFrameTime + 1000 < curTime)
-        {
-            lastFrameTime = curTime;
-            rFPS = frames;
-            frames = 0;
-        }
-        //now about our tick
-        lastTime = curTime;
-        return true;
+    //проверяем, прошёл ли тик (секунда/cFPS)
+    int timeTest = 1000/cFPS  + lastTime - curTime;
+    if (timeTest  > 0) {
+        SDL_Delay(timeTest);
     }
-    return false;
+    //first, let's count actual fps
+    frames ++;
+    if (lastFrameTime + 1000 < curTime) {
+        lastFrameTime = curTime;
+        rFPS = frames;
+        frames = 0;
+   //     if (g_config.debug) {
+    //        if (rFPS < cFPS - 1) {
+     //           smallFPSCount ++;
+      //          smallFPSPool += rFPS;
+       //     }
+        //}
+    }
+    //now about our tick
+    lastTime = SDL_GetTicks();
+    if (lastTime < curTime - 1000/cFPS) {
+        lastTime = curTime;
+    }
+    return true;
 }
 
 int FPS::GetFPS()
